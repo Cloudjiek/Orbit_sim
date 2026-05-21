@@ -15,6 +15,8 @@ const double Earth_a = 149600000000; // m
 const double Earth_e = 0.0167;
 const double Earth_T = 365; // days
 
+const int dt = 1.0; // days
+
 const double Sun_mass = 1.989e30; // kg
 
 // Celestial bodies
@@ -47,6 +49,7 @@ double calc_velocity(const Planet &p, const Sun &s, double distance) {
 	return velocity;
 }
 
+// Calculates the eccentric anomaly E;
 double calc_E(const Planet& p, const Sun& s, double t) {
 	// Calculates the mean anomaly M
 	double M = (2.0 * M_PI * t) / p.T;
@@ -86,7 +89,7 @@ double calc_y(const Planet& p, double E) {
 
 // Everything used here is explained above
 void simulate_orbit(const Planet &p, const Sun &s) {
-	for (int t = 0; t < p.T; t++) {
+	for (int t = 0; t < p.T; t = t + dt) {
 		double E = calc_E(p, s, t);
 
 		double R = calc_R(p, s, E);
