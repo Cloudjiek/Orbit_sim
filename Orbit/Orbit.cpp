@@ -4,6 +4,7 @@
 #include <cmath>
 #include <thread>
 #include <chrono>
+//#include "raylib.h" // raylib is optional! Download it if you want visualition
 
 using namespace std;
 
@@ -101,24 +102,72 @@ void simulate_orbit(const Planet &p, const Sun &s) {
 		double x = calc_x(p, E);
 		double y = calc_y(p, E);
 
+
 		cout << "Force: " << g_force << " [|] Distance: " << R << " [|] Velocity: " << v << " [|] [x, y]: [" << x << ", " << y << " ]" << endl;
 
 		this_thread::sleep_for(chrono::milliseconds(100));
 	}
 }
+/*
+
+// Optional raylib
+// raylib part
+void draw_raylib(const Planet &p, const Sun &s) {
+	const int screenWidth = 800;
+	const int screenHeight = 800;
+	InitWindow(screenWidth, screenHeight, "Orbital simulator");
+
+	const double scale = 800000000.0;
+	const int centerX = screenWidth / 2;
+	const int centerY = screenHeight / 2;
+
+	double planetT = 0;
+
+	double t = 0.0;
+
+	SetTargetFPS(60);
+
+	while (!WindowShouldClose()) {
+		t = t + 0.5;
+
+		if (t >= p.T) t = 0;
+
+		double E = calc_E(p, s, t);
+		double x = calc_x(p, E);
+		double y = calc_y(p, E);
+
+		double R = calc_R(p, s, E);
+		double v = calc_velocity(p, s, R);
+
+		int X = centerX + (int)(x / scale);
+		int Y = centerY + (int)(y / scale);
+
+		BeginDrawing();
+		ClearBackground(BLACK);
+
+		DrawCircle(centerX, centerY, 20, YELLOW);
+		DrawText("Sun", centerX - 25, centerY - 35, 10, RAYWHITE);
+
+		DrawCircle(X, Y, 8, BLUE);
+		DrawText("Planet", X + 12, Y - 5, 10, WHITE);
+		DrawText(TextFormat("Velocity: %0.2f m/s", v), X + 12, Y + 10, 10, WHITE);
+		DrawText(TextFormat("Distance: %0.2f m", R), X + 12, Y + 20, 10, WHITE);
+
+		DrawText(TextFormat("Day: %0.2f", t), 20, 20, 20, WHITE);
+
+		EndDrawing();
+	}
+}
+*/
 
 int main() {
 	Planet earth = { "Earth", Earth_mass, Earth_a, Earth_e, Earth_T };
 	Sun sun = { "Sun", Sun_mass };
 
-	Planet mars = { "Mars", 6.39e23, 227939200000, 0.0934, 687 };
-
-	//double g_force = calc_g_force(earth, sun);
-	//cout << g_force << " N" << endl;
+	Planet pluton = { "Pluton", 1.303e22, 5906380000000, 0.2488, 90560 };
 
 	simulate_orbit(earth, sun);
-
-	//simulate_orbit(mars, sun);
+	//draw_raylib(pluton, sun);
 
 	return 0;
 }
