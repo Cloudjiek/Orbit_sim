@@ -9,3 +9,7 @@ The code is divided into 5 parts:
 3. Calculating velocity using the vis-viva equation
 4. Calculating the eccentric anomaly E using Newton's method
 5. Calculating the distance and orbital position (x, y) using the calculated values
+
+IMPORTANT! The code has "raylib". If you're willing to visualize an orbit, you can uncomment it.
+
+Cloudjiek :)
